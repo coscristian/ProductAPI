@@ -8,9 +8,6 @@ services:
       MSSQL_SA_PASSWORD: ${DB_PASSWORD}
     ports:
       - "1433:1433"
-    volumes:
-      - sqlserver_data:/var/opt/mssql
-    restart: unless-stopped
 
   api:
     build:
@@ -24,7 +21,3 @@ services:
       - "8080:8080"
     depends_on:
       - sqlserver
-    restart: unless-stopped
-
-volumes:
-  sqlserver_data:

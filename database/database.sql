@@ -144,9 +144,6 @@ BEGIN
     WHERE Id = @Id
       AND IsDeleted = 0;
 
-    IF @@ROWCOUNT = 0
-        RETURN 1;
-
     SELECT
         Id,
         Name,
@@ -156,7 +153,8 @@ BEGIN
         IsDeleted,
         DeletedDate
     FROM Products
-    WHERE Id = @Id;
+    WHERE Id = @Id
+      AND IsDeleted = 0;
 END;
 GO
 

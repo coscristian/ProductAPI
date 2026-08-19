@@ -1,3 +1,5 @@
+using SeniorDeveloperTest.Domain.Exceptions;
+
 namespace SeniorDeveloperTest.Domain.Aggregates.ProductAggregate;
 
 
@@ -73,7 +75,7 @@ public sealed class Product
         decimal price)
     {
         if (IsDeleted)
-            throw new InvalidOperationException("A deleted product cannot be updated.");
+            throw new DomainException("A deleted product cannot be updated.");
 
         Validate(name, price);
 
@@ -94,18 +96,12 @@ public sealed class Product
     private static void Validate(string name, decimal price)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException(
-                "Product name is required.",
-                nameof(name));
+            throw new DomainException("Product name is required.");
 
         if (name.Length > 200)
-            throw new ArgumentException(
-                "Product name cannot exceed 200 characters.",
-                nameof(name));
+            throw new DomainException("Product name cannot exceed 200 characters.");
 
         if (price <= 0)
-            throw new ArgumentException(
-                "Product price must be greater than zero.",
-                nameof(price));
+            throw new DomainException("Product price must be greater than zero.");
     }
 }
