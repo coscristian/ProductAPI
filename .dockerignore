@@ -1,0 +1,9 @@
+.git
+.gitignore
+.vscode
+.idea
+**/bin
+**/obj
+**/.vs
+README.md
+.env
