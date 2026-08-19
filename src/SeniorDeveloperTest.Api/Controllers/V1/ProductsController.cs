@@ -103,4 +103,21 @@ public sealed class ProductsController : ControllerBase
 
         return deleted ? NoContent() : NotFound();
     }
+    
+    [HttpGet("{id:int}/price-conversion")]
+    public async Task<IActionResult> ConvertPrice(
+        int id,
+        [FromQuery] string currency,
+        CancellationToken cancellationToken)
+    {
+        var result = await _productService.ConvertPriceAsync(
+            id,
+            currency,
+            cancellationToken);
+
+        if (result is null)
+            return NotFound();
+
+        return Ok(result);
+    }
 }
