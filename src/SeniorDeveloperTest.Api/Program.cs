@@ -1,3 +1,5 @@
+using SeniorDeveloperTest.Api.Extensions;
+
 namespace SeniorDeveloperTest.Api;
 
 public class Program
@@ -6,27 +8,11 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddAuthorization();
-
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddControllers();
-        
+        builder.RegisterServices(typeof(Program));
         var app = builder.Build();
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+        app.RegisterPipelineComponents(typeof(Program));
 
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
-        app.MapControllers();
-        
         app.Run();
     }
 }
