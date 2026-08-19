@@ -2,7 +2,6 @@ using SeniorDeveloperTest.Domain.Exceptions;
 
 namespace SeniorDeveloperTest.Domain.Aggregates.ProductAggregate;
 
-
 public sealed class Product
 {
     public int Id { get; private set; }

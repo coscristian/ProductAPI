@@ -28,11 +28,6 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             DomainException => (
                 StatusCodes.Status400BadRequest,
                 "Business rule violation"),
-
-            ArgumentException => (
-                StatusCodes.Status400BadRequest,
-                "Invalid request"),
-
             _ => (
                 StatusCodes.Status500InternalServerError,
                 "An unexpected error occurred.")

@@ -1,4 +1,4 @@
-namespace SeniorDeveloperTest.Application.Dtos;
+namespace SeniorDeveloperTest.Application.Services.Product.Dtos.Products;
 
 public sealed record ProductResponse(
     int Id,

@@ -1,24 +1,29 @@
 using SeniorDeveloperTest.Application.Dtos;
-using SeniorDeveloperTest.Application.Interfaces;
+using SeniorDeveloperTest.Application.Dtos.ExchangeRate;
 using SeniorDeveloperTest.Application.Queries;
-using SeniorDeveloperTest.Domain.Aggregates.ProductAggregate;
+using SeniorDeveloperTest.Application.Services.ExchangeRate.Interfaces;
+using SeniorDeveloperTest.Application.Services.Product.Dtos.Products;
+using SeniorDeveloperTest.Application.Services.Product.Interfaces;
+using DomainProduct = SeniorDeveloperTest.Domain.Aggregates.ProductAggregate.Product;
 
-namespace SeniorDeveloperTest.Application.Services;
+namespace SeniorDeveloperTest.Application.Services.Product;
 
 public sealed class ProductService : IProductService
 {
     private readonly IProductRepository _productRepository;
+    private readonly IExchangeRateService _exchangeRateService;
 
-    public ProductService(IProductRepository productRepository)
+    public ProductService(IProductRepository productRepository, IExchangeRateService exchangeRateService)
     {
         _productRepository = productRepository;
+        _exchangeRateService = exchangeRateService;
     }
 
     public async Task<ProductResponse> CreateAsync(
         CreateProductRequest request,
         CancellationToken cancellationToken = default)
     {
-        var product = Product.Create(
+        var product = DomainProduct.Create(
             request.Name,
             request.Description,
             request.Price);
@@ -97,7 +102,52 @@ public sealed class ProductService : IProductService
             cancellationToken);
     }
 
-    private static ProductResponse MapToResponse(Product product)
+    public async Task<ProductPriceConversionResponse?> ConvertPriceAsync(
+        int productId,
+        string targetCurrency,
+        CancellationToken cancellationToken = default)
+    {
+        var product = await _productRepository.GetByIdAsync(
+            productId,
+            cancellationToken);
+
+        if (product is null)
+            return null;
+
+        const string baseCurrency = "COP";
+
+        if (targetCurrency.Equals(
+                baseCurrency,
+                StringComparison.OrdinalIgnoreCase))
+        {
+            return new ProductPriceConversionResponse(
+                product.Id,
+                product.Name,
+                product.Price,
+                baseCurrency,
+                product.Price,
+                baseCurrency,
+                1);
+        }
+
+        var exchangeRate = await _exchangeRateService.GetExchangeRateAsync(
+            baseCurrency,
+            targetCurrency,
+            cancellationToken);
+
+        var convertedPrice = product.Price * exchangeRate;
+
+        return new ProductPriceConversionResponse(
+            product.Id,
+            product.Name,
+            product.Price,
+            baseCurrency,
+            convertedPrice,
+            targetCurrency.ToUpperInvariant(),
+            exchangeRate);
+    }
+
+    private static ProductResponse MapToResponse(DomainProduct product)
     {
         return new ProductResponse(
             product.Id,

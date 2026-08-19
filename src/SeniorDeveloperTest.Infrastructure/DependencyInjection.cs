@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using SeniorDeveloperTest.Application.Interfaces;
+using SeniorDeveloperTest.Application.Services.ExchangeRate.Interfaces;
+using SeniorDeveloperTest.Application.Services.Product.Interfaces;
+using SeniorDeveloperTest.Infrastructure.ExternalServices.ExchangeRate;
 using SeniorDeveloperTest.Infrastructure.Persistence;
 using SeniorDeveloperTest.Infrastructure.Repositories;
 
@@ -23,6 +25,10 @@ public static class DependencyInjection
             new SqlConnectionFactory(connectionString));
 
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddHttpClient<IExchangeRateService, ExchangeRateClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://open.er-api.com/v6/");
+        });
 
         return services;
     }

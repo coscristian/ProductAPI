@@ -6,6 +6,7 @@ public class MvcWebAppRegistrar : IWebApplicationRegistrar
 {
     public void RegisterPipelineComponents(WebApplication app)
     {
+        app.UseExceptionHandler();
         app.UseSwagger();
         app.UseSwaggerUI(options =>
         {

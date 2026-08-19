@@ -1,7 +1,7 @@
 using System.Data;
 using Dapper;
-using SeniorDeveloperTest.Application.Interfaces;
 using SeniorDeveloperTest.Application.Queries;
+using SeniorDeveloperTest.Application.Services.Product.Interfaces;
 using SeniorDeveloperTest.Domain.Aggregates.ProductAggregate;
 using SeniorDeveloperTest.Infrastructure.Persistence;
 using SeniorDeveloperTest.Infrastructure.Persistence.Models;

@@ -1,5 +1,6 @@
 using FluentValidation;
 using SeniorDeveloperTest.Application.Dtos;
+using SeniorDeveloperTest.Application.Services.Product.Dtos.Products;
 
 namespace SeniorDeveloperTest.Application.Validators.Products;
 

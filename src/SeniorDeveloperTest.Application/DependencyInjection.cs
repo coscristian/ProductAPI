@@ -1,7 +1,8 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using SeniorDeveloperTest.Application.Interfaces;
 using SeniorDeveloperTest.Application.Services;
+using SeniorDeveloperTest.Application.Services.Product;
+using SeniorDeveloperTest.Application.Services.Product.Interfaces;
 
 namespace SeniorDeveloperTest.Application;
 
